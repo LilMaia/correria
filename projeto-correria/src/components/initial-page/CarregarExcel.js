@@ -38,6 +38,7 @@ const ExcelUploadComponent = () => {
               objetivo_tempo,
               objetivo_distancia,
               data_objetivo_final,
+              volume_semanal_final,
             } = row;
 
             if (email) {
@@ -57,14 +58,10 @@ const ExcelUploadComponent = () => {
                   ja_corre === "sim" ? (ja_corre_boolean = true) : (ja_corre_boolean= false);
 
                   //converterStringParaData é uma função que está no arquivo excel_data_to_js_data.js
-                  console.log(data_nascimento);
-                  console.log(data_objetivo_final);
                   const dataNascimento = converterNumeroParaData(data_nascimento);
                   const dataObjetivoFinal = converterNumeroParaData(data_objetivo_final);
-                  console.log("convertido"+dataNascimento);
-                  console.log("convertido"+dataObjetivoFinal);
 
-                  await fetch(
+                  const response = await fetch(
                     ENV_BASE_URL + "/api/create-user",
                     {
                       method: "POST",
@@ -85,11 +82,22 @@ const ExcelUploadComponent = () => {
                         objetivo_tempo,
                         objetivo_distancia,
                         data_objetivo_final: dataObjetivoFinal,
+                        volume_semanal_final,
                       }),
                     }
                   );
+          
+                  if (response.ok) {
+                    // O usuário foi criado com sucesso, agora obtenha o ID do usuário
+                    const userId = await response.json();
+          
+                    // Faça uma chamada para criar o treino para este usuário
+                    await fetch(`${ENV_BASE_URL}/api/create-treino/${userId}`, {
+                      method: "POST",
+                    });
+                  }
                 }
-              } catch (error) {
+              }catch (error) {
                 console.log("Erro ao cadastrar o treino :" + error);
                 console.log(true);
               }

@@ -17,6 +17,7 @@ class User(db.Model):
     objetivo_distancia = db.Column(db.Float)
     data_objetivo_final = db.Column(db.Date)
     classificacao = db.Column(db.String(255))
+    volume_semanal_final = db.Column(db.Float)
 
     def to_dict(self):
         return {
@@ -34,5 +35,6 @@ class User(db.Model):
             'objetivo_tempo': self.objetivo_tempo,
             'objetivo_distancia': self.objetivo_distancia,
             'data_objetivo_final': self.data_objetivo_final,
-            'classificacao': self.classificacao
+            'classificacao': self.classificacao,
+            'volume_semanal_final': self.volume_semanal_final
         }

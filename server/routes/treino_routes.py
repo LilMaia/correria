@@ -42,13 +42,14 @@ def create_user():
         data_nascimento=user_data['data_nascimento'],
         objetivo_tempo=user_data['objetivo_tempo'],
         objetivo_distancia=user_data['objetivo_distancia'],
-        data_objetivo_final=user_data['data_objetivo_final']
+        data_objetivo_final=user_data['data_objetivo_final'],
+        volume_semanal_final=user_data['volume_semanal_final'],
     )
     # Adicionar o novo usuário ao banco de dados
     db.session.add(new_user)
     db.session.commit()
     # Retornar o novo usuário como JSON
-    return jsonify(new_user.to_dict())
+    return jsonify(new_user.id)
 
 @app.route('/api/create-treino/<int:user_id>', methods=['POST'])
 def create_treino(user_id):

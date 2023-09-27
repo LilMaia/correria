@@ -17,6 +17,7 @@ function TreinoIndividual() {
     objetivo_tempo: "",
     objetivo_distancia: "",
     data_objetivo_final: "",
+    volume_semanal_final: "",
   });
   const [showSuccessModal, setShowSuccessModal] = useState(false); // Estado para controlar a exibição da modal de sucesso
   const [showErrorModal, setShowErrorModal] = useState(false); // Estado para controlar a exibição da modal de erro
@@ -208,6 +209,17 @@ function TreinoIndividual() {
                 required
               />
             </Form.Group>
+
+            <Form.Group controlId="volume_semanal_final" className="mb-4">
+                <Form.Label>Volume semanal final</Form.Label>
+                <Form.Control
+                  type="number" // Alterado para "number"
+                  name="volume_semanal_final"
+                  value={formData.volume_semanal_final}
+                  onChange={handleChange}
+                  step="0.01" // Para permitir decimais
+                />
+              </Form.Group>
 
             <Button variant="primary" type="submit" className="mt-2">
               Enviar

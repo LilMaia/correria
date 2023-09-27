@@ -19,6 +19,7 @@ def generate_random_user():
         objetivo_tempo=fake.random_int(min=1000, max=30000) / 100.0, 
         objetivo_distancia=fake.random_int(min=1000, max=30000) / 100.0,
         data_objetivo_final=fake.date_of_birth(minimum_age=18, maximum_age=70),
+        volume_semanal_final=fake.random_int(min=0, max=500000) / 100.0,
     )
     return user
 

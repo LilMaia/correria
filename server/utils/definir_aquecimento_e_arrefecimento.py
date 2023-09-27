@@ -2,7 +2,7 @@ def calcular_aquecimento_arrefecimento(categoria_atleta):
     if categoria_atleta == "Iniciante":
         aquecimento = 1.5
         arrefecimento = 0.5
-    elif categoria_atleta == "Intermediario":
+    elif categoria_atleta == "Intermediário":
         aquecimento = 2
         arrefecimento = 1
     elif categoria_atleta == "Avançado":

@@ -32,32 +32,44 @@ function TreinoIndividual() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    fetch(ENV_BASE_URL + "/api/create-user", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    })
-      .then((response) => {
-        if (response.ok) {
-          // Exibir a modal de sucesso
+  
+    try {
+      const response = await fetch(ENV_BASE_URL + "/api/create-user", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+  
+      if (response.ok) {
+        // O usuário foi criado com sucesso, agora obtenha o ID do usuário
+        const userId = await response.json();
+  
+        // Faça uma chamada para criar o treino para este usuário
+        const treinoResponse = await fetch(`${ENV_BASE_URL}/api/create-treino/${userId}`, {
+          method: "POST",
+        });
+  
+        if (treinoResponse.ok) {
           setShowSuccessModal(true);
         } else {
-          // Exibir a modal de erro
+          // Exibir a modal de erro para a criação do treino
           setShowErrorModal(true);
         }
-      })
-      .catch((error) => {
-        console.error("Erro ao enviar dados para a API:", error);
-        // Exibir a modal de erro
+      } else {
+        // Exibir a modal de erro para a criação do usuário
         setShowErrorModal(true);
-      });
+      }
+    } catch (error) {
+      console.error("Erro ao enviar dados para a API:", error);
+      // Exibir a modal de erro geral
+      setShowErrorModal(true);
+    }
   };
-
+  
   return (
     <Container style={{ marginBottom: "100px" }}>
       <Row>
@@ -111,7 +123,7 @@ function TreinoIndividual() {
             </Form.Group>
 
             <Form.Group controlId="distancia_teste" className="mb-2">
-              <Form.Label>Distância Teste (em metros)</Form.Label>
+              <Form.Label>Distância Teste (em quilômetros)</Form.Label>
               <Form.Control
                 type="number" // Alterado para "number"
                 name="distancia_teste"

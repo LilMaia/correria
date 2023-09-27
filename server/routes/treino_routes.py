@@ -1,8 +1,9 @@
-from flask import request, jsonify
+from flask import request, jsonify, send_file
 from app_factory import app, db
 from models.User import User
 from mockers.user_mocker import add_random_users_to_db
 from utils.gerar_ficha import gerar_ficha
+from io import BytesIO
 
 # Definir uma rota com parâmetros
 @app.get('/api/get-user/<int:user_id>')
@@ -55,10 +56,23 @@ def create_user():
 def create_treino(user_id):
     # Obter o usuário com o ID especificado
     user = User.query.get(user_id)
-    #gerar ficha do usuário
-    gerar_ficha(user)
-    # Retornar o usuário como um dicionário JSON
-    return jsonify(user.to_dict())
+
+    # Verificar se o usuário existe
+    if user is None:
+        return jsonify({'error': 'Usuário não encontrado'}), 404
+
+    # Gerar a ficha do usuário (PDF)
+    pdf_buffer = BytesIO()
+    gerar_ficha(user, pdf_buffer)
+
+    # Salvar o PDF em um arquivo temporário (opcional)
+    temp_file_name = f"ficha_de_treino_{user_id}.pdf"
+    with open(temp_file_name, "wb") as temp_file:
+        temp_file.write(pdf_buffer.getvalue())
+
+    # Retornar o PDF como uma resposta HTTP para download
+    pdf_buffer.seek(0)
+    return send_file(pdf_buffer, as_attachment=True, download_name=f"ficha_de_treino_{user_id}.pdf")
 
 #Mocker de usuários
 @app.route('/api/user/<int:num_users>', methods=['POST'])

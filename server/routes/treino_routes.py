@@ -72,7 +72,7 @@ def create_treino(user_id):
 
     # Retornar o PDF como uma resposta HTTP para download
     pdf_buffer.seek(0)
-    return send_file(pdf_buffer, as_attachment=True, download_name=f"ficha_de_treino_{user_id}.pdf")
+    return send_file(pdf_buffer, as_attachment=True, download_name=f"ficha_de_treino_{user_id}.pdf", mimetype='application/pdf')
 
 #Mocker de usuários
 @app.route('/api/user/<int:num_users>', methods=['POST'])

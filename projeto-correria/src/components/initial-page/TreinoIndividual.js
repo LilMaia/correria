@@ -54,6 +54,18 @@ function TreinoIndividual() {
         });
   
         if (treinoResponse.ok) {
+          // Baixar o arquivo PDF
+          const blob = await treinoResponse.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = `ficha_de_treino_${userId}.pdf`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+  
+          // Exibir a modal de sucesso
           setShowSuccessModal(true);
         } else {
           // Exibir a modal de erro para a criação do treino
@@ -68,7 +80,7 @@ function TreinoIndividual() {
       // Exibir a modal de erro geral
       setShowErrorModal(true);
     }
-  };
+  };  
   
   return (
     <Container style={{ marginBottom: "100px" }}>

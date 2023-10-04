@@ -54,12 +54,16 @@ const ExcelUploadComponent = () => {
                   //não faz nada, pois o usuário já existe
                 } else {
                   // Se o email não existe, crie-a o treino no banco de dados
-                  let ja_corre_boolean = false
-                  ja_corre === "sim" ? (ja_corre_boolean = true) : (ja_corre_boolean= false);
+                  let ja_corre_boolean = false;
+                  ja_corre === "sim"
+                    ? (ja_corre_boolean = true)
+                    : (ja_corre_boolean = false);
 
                   //converterStringParaData é uma função que está no arquivo excel_data_to_js_data.js
-                  const dataNascimento = converterNumeroParaData(data_nascimento);
-                  const dataObjetivoFinal = converterNumeroParaData(data_objetivo_final);
+                  const dataNascimento =
+                    converterNumeroParaData(data_nascimento);
+                  const dataObjetivoFinal =
+                    converterNumeroParaData(data_objetivo_final);
 
                   const response = await fetch(
                     ENV_BASE_URL + "/api/create-user",
@@ -86,24 +90,25 @@ const ExcelUploadComponent = () => {
                       }),
                     }
                   );
-          
+
                   if (response.ok) {
                     // O usuário foi criado com sucesso, agora obtenha o ID do usuário
                     const userId = await response.json();
-          
+
                     // Faça uma chamada para criar o treino para este usuário
                     await fetch(`${ENV_BASE_URL}/api/create-treino/${userId}`, {
                       method: "POST",
                     });
                   }
                 }
-              }catch (error) {
+              } catch (error) {
                 console.log("Erro ao cadastrar o treino :" + error);
                 console.log(true);
               }
             }
           }
         };
+
         reader.readAsArrayBuffer(file);
         setModalMessage("Tabela carregada no banco com sucesso!");
         setModalVisible(true);
@@ -113,6 +118,33 @@ const ExcelUploadComponent = () => {
       } finally {
         setInputKey(Date.now());
       }
+
+      const zipResponse = await fetch("/api/gerar-zip", {
+        method: "GET",
+      });
+      
+      if (zipResponse.ok) {
+        const zipText = await zipResponse.text();
+        const zipBlob = new Blob([zipText], {
+          type: "application/zip",
+        });
+      
+        const url = window.URL.createObjectURL(zipBlob);
+      
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "arquivos.zip";
+      
+        document.body.appendChild(a);
+        a.click();
+      
+        // Após o download, revogue a URL do objeto Blob e remova o link <a> do corpo do documento
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.error("Erro ao baixar o arquivo ZIP");
+      }
+      
     }
   };
 

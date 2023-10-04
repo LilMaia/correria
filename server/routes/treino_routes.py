@@ -4,6 +4,10 @@ from models.User import User
 from mockers.user_mocker import add_random_users_to_db
 from utils.gerar_ficha import gerar_ficha
 from io import BytesIO
+import os
+import zipfile
+import io
+import logging
 
 # Definir uma rota com parâmetros
 @app.get('/api/get-user/<int:user_id>')
@@ -52,6 +56,38 @@ def create_user():
     # Retornar o novo usuário como JSON
     return jsonify(new_user.id)
 
+@app.route('/api/gerar-zip', methods=['GET'])
+def gerar_zip():
+    diretorio = 'C:/Users/rafae/Documents/correr.ia/correria/server/'
+    arquivos_pdf = [os.path.join(diretorio, arquivo) for arquivo in os.listdir(diretorio) if arquivo.lower().endswith('.pdf')]
+
+    try:
+        # Cria um arquivo ZIP na memória
+        temp_zip = io.BytesIO()
+        with zipfile.ZipFile(temp_zip, 'w', zipfile.ZIP_DEFLATED, allowZip64=True) as zip_file:
+            for arquivo_pdf in arquivos_pdf:
+                try:
+                    # Adiciona o arquivo PDF ao ZIP com seu caminho completo como nome interno
+                    zip_file.write(arquivo_pdf, os.path.basename(arquivo_pdf))
+                except Exception as e:
+                    logging.error(f"Erro ao ler o arquivo PDF {arquivo_pdf}: {e}")
+
+        # Retorna o arquivo ZIP como uma resposta HTTP para download
+        temp_zip.seek(0)  # Volta ao início do arquivo antes de lê-lo
+        response = send_file(temp_zip, as_attachment=True, download_name='arquivos.zip', mimetype='application/zip')
+        response.headers["Content-Length"] = len(temp_zip.getvalue())
+        return response
+
+    except Exception as e:
+        logging.error(f"Erro ao criar o arquivo ZIP: {e}")
+        return "Erro ao criar o arquivo ZIP", 500
+        
+@app.route('/api/listar-arquivos', methods=['GET'])
+def listar_arquivos():
+    diretorio = 'C:/Users/rafae/Documents/correr.ia/correria/server/'
+    arquivos = [arquivo for arquivo in os.listdir(diretorio) if arquivo.lower().endswith('.pdf')]
+    return jsonify(arquivos)        
+        
 @app.route('/api/create-treino/<int:user_id>', methods=['POST'])
 def create_treino(user_id):
     # Obter o usuário com o ID especificado

@@ -86,7 +86,7 @@ def gerar_zip():
 def listar_arquivos():
     diretorio = 'C:/Users/rafae/Documents/correr.ia/correria/server/'
     arquivos = [arquivo for arquivo in os.listdir(diretorio) if arquivo.lower().endswith('.pdf')]
-    return jsonify(arquivos)        
+    return jsonify(arquivos)
         
 @app.route('/api/create-treino/<int:user_id>', methods=['POST'])
 def create_treino(user_id):

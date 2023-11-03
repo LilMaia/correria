@@ -28,6 +28,9 @@ const InitialPageHeader = () => {
               <Link to="/carregar-excel" className="nav-link">
                 Carregar Excel
               </Link>
+              <Link to="/login" className="nav-link">
+                Login
+              </Link>
             </Nav>
           </Navbar.Collapse>
         </Container>

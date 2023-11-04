@@ -15,13 +15,14 @@ function ForgotPassWord() {
       </div>
   
       <SubTexto texto="Qual é o e-mail cadastrado?"/>
+      <div className="mb-4"> 
       <InputForm
         type="email"
         text="E-mail"
         name="email"
         placeholder="email@email.com"
       />
- 
+ </div>
       <ButtonForm text="Prosseguir" />
  
     </div>

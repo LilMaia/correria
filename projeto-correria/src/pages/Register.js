@@ -6,10 +6,10 @@ import Texto from "../components/initial-page/Texto.js";
 import CheckboxForm from "../components/initial-page/CheckboxForm.js";
 import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
-import "../styles/initial-page//configaccount.css";
+import "../styles/initial-page/configaccount.css";
 function Register() {
   return (
-    <div className="form_body m-auto">
+    <div className="form_body m-auto ">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Crie sua conta" />
@@ -27,7 +27,7 @@ function Register() {
         name="name"
         placeholder="Seu nome"
       />
-      <div className="d-flex justify-content-around gap-1 p-2 ">
+      <div className="d-md-flex justify-content-md-between gap-1">
         <InputForm 
           type="email"
           text="E-mail"

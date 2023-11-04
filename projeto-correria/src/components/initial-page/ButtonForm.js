@@ -1,10 +1,11 @@
-import Button from 'react-bootstrap/Button';
+import Button from "react-bootstrap/Button";
 
-function Buttonform({text}) {
+function Buttonform({ text }) {
   return (
-    <>     
-      <Button variant="dark"  className="w-100     text-white rounded-1">{text}</Button>
- 
+    <>
+      <Button variant="dark" className="text-white rounded-1  mx-2 mr-2">
+        {text}
+      </Button>
     </>
   );
 }

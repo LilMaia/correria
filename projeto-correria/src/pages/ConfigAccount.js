@@ -18,10 +18,10 @@ function ConfigAccount() {
         name="acessoria"
         placeholder="Nome da acessoria"
       />
-      <div className="d-flex justify-content-around gap-2 p-2">
+     
       <SelectForm text="Selecione"/>
-      <SelectForm text="Selecione"/>
-      </div>
+     
+      
       <InputForm
         type="text"
         text="Site da acessoria"

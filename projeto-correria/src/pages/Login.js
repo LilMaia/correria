@@ -8,8 +8,10 @@ import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
 import "../styles/initial-page//login.css";
 function Login() {
+
+
   return (
-    <div className="form_body m-auto">
+    <form  className="form_body m-auto">
       <div className="d-flex flex-column ">
         <ImageForm  />
       <Texto texto="Acesse sua conta"/>
@@ -41,7 +43,7 @@ function Login() {
           Quero me cadastrar gratuitamente
         </Link>
       </p>
-    </div>
+    </form>
   );
 }
 

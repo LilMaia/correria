@@ -42,7 +42,7 @@ const submitForm=(e)=>{
     email:userData.email,
     senha:userData.senha,
     telefone:userData.telefone,
-    numAtletatas:atletas,
+    numero_de_atletas:atletas,
     estado:state,
     cidade:city
   }

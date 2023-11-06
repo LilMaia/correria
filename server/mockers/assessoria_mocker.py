@@ -10,6 +10,9 @@ def generate_random_assessoria():
         email=fake.email(),
         telefone=fake.phone_number(),
         site=fake.url(),
+        estado=fake.state(),
+        cidade=fake.city(),
+        numero_de_atletas=fake.random_int(min=0, max=500000),
         data_cadastro=fake.date_this_century(),
         senha=fake.password(),
     )

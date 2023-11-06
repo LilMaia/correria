@@ -7,6 +7,9 @@ class Assessoria(db.Model):
     email = db.Column(db.String(255), unique=True)
     telefone = db.Column(db.String(255), unique=True)
     site = db.Column(db.String(255))
+    estado = db.Column(db.String(255))
+    cidade = db.Column(db.String(255))
+    numero_de_atletas = db.Column(db.Integer)
     data_cadastro = db.Column(db.Date)
     senha = db.Column(db.String(255))
 
@@ -23,6 +26,9 @@ class Assessoria(db.Model):
             'email': self.email,
             'telefone': self.telefone,
             'site': self.site,
+            'estado': self.estado,
+            'cidade': self.cidade,
+            'numero_de_atletas': self.numero_de_atletas,
             'data_cadastro': self.data_cadastro,
             'senha': self.senha,
             'treinadores': [treinador.to_dict() for treinador in self.treinadores],

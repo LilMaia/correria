@@ -19,6 +19,9 @@ def cadastrar_assesoria():
         email=data['email'],
         telefone=data['telefone'],
         site=data['site'],
+        estado=data['estado'],
+        cidade=data['cidade'],
+        numero_de_atletas=data['numero_de_atletas'],
         data_cadastro=datetime.now(),
         senha=hashed_password
     )
@@ -43,6 +46,24 @@ def rota_protegida():
     assessoria_id = current_user['id']
     assessoria_email = current_user['email']
     return jsonify(assessoria_id=assessoria_id, assessoria_email=assessoria_email), 200
+
+#rota para verificar se o email está cadastrado
+@app.route('/assessoria/verificar-email', methods=['POST'])
+def verificar_email():
+    data = request.get_json()
+    email = data['email']
+    assessoria = Assessoria.query.filter_by(email=email).first()
+    if assessoria:
+        return jsonify({'message': 'Email cadastrado'}), 200
+    return jsonify({'message': 'Email não existe no banco'}), 404
+
+#rota que recebe um id como parâmetro e recebe os dados do usuario
+@app.route('/assessoria/<int:id>', methods=['GET'])
+def get_assessoria(id):
+    assessoria = Assessoria.query.get(id)
+    if not assessoria:
+        return jsonify({'message': 'Assessoria não encontrada'}), 404
+    return jsonify(assessoria.to_dict()), 200
 
 # Rota para resetar a senha
 @app.route('/assessoria/resetar-senha', methods=['POST'])

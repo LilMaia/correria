@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "react-bootstrap/Form";
-function InputForm({ type, text, name, placeholder, handleOnChange, value }) {
+function InputForm({ type, text, name, placeholder,value,handleOnChange }) {
+
   return (
     <Form>
       <Form.Group className=" text-start p-2 " controlId={name}>
@@ -9,7 +10,7 @@ function InputForm({ type, text, name, placeholder, handleOnChange, value }) {
           type={type}
           name={name}       
           placeholder={placeholder}
-          onChange={handleOnChange}
+           onChange={handleOnChange}
           value={value}
         />
       </Form.Group>

@@ -6,10 +6,62 @@ import Texto from "../components/initial-page/Texto.js";
 import CheckboxForm from "../components/initial-page/CheckboxForm.js";
 import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
+import React, { useState } from "react";
 import "../styles/initial-page/configaccount.css";
 function Register() {
+  const [name, setName] = useState("");
+  const [telefone, setTelefone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const handleOnName = (e) => {
+    e.preventDefault();
+    setName(e.target.value);
+    checkFormValidity();
+  };
+  const handleOnTelefone = (e) => {
+    e.preventDefault();
+    setTelefone(e.target.value);
+    checkFormValidity();
+  };
+  const handleOnEmail = (e) => {
+    e.preventDefault();
+    setEmail(e.target.value);
+    checkFormValidity();
+  };
+  const handleOnPassword = (e) => {
+    e.preventDefault();
+    setPassword(e.target.value);
+    checkFormValidity();
+  };
+  function checkFormValidity(){
+ 
+    const isValid =
+      name.trim() !== "" &&
+      telefone.trim() !== "" &&
+      email.trim() !== "" &&
+      password.trim() !== "" 
+    
+
+    setIsButtonDisabled(!isValid);
+  };
+ 
+  const submitForm = (e) => {
+    e.preventDefault();
+    const userData = {
+      name: name,
+      telefone: telefone,
+      senha: password,
+      email: email,
+    };
+    const userDataString = JSON.stringify(userData);
+    localStorage.setItem('register', userDataString);
+ 
+
+  };
+
   return (
-    <div className="form_body m-auto ">
+    <form onSubmit={submitForm} className="form_body m-auto ">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Crie sua conta" />
@@ -26,22 +78,25 @@ function Register() {
         text="Nome completo"
         name="name"
         placeholder="Seu nome"
+        handleOnChange={handleOnName}
       />
       <div className="d-md-flex justify-content-md-between gap-1">
-        <InputForm 
+        <InputForm
           type="email"
           text="E-mail"
           name="Email"
           placeholder="Digite seu e-mail"
+          handleOnChange={handleOnEmail}
         />
         <InputForm
           type="tel"
           text="Telefone (opcional)"
           name="telephone"
           placeholder="(31)999999999"
+          handleOnChange={handleOnTelefone}
         />
       </div>
-      <InputPassword text="Senha" />
+      <InputPassword text="Senha" handlePasswordChange={handleOnPassword} />
       <div className="d-flex gap-1  p-2">
         <CheckboxForm />
         <small>
@@ -70,7 +125,7 @@ function Register() {
           <small>Já tenho conta</small>
         </Link>
       </p>
-    </div>
+    </form>
   );
 }
 

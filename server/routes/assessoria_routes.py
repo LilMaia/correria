@@ -8,6 +8,7 @@ from flask_jwt_extended import get_jwt_identity
 from mockers.assessoria_mocker import add_random_assessorias_to_db
 from utils.assessoria.gerar_codigo_email import generate_reset_code
 from utils.assessoria.enviar_email import send_reset_email
+from datetime import datetime, timedelta
 
 # Rota para cadastro de uma nova Assesoria
 @app.route('/assessoria/cadastro', methods=['POST'])
@@ -65,8 +66,7 @@ def get_assessoria(id):
         return jsonify({'message': 'Assessoria não encontrada'}), 404
     return jsonify(assessoria.to_dict()), 200
 
-# Rota para resetar a senha
-@app.route('/assessoria/resetar-senha', methods=['POST'])
+@app.route('/assessoria/gerar-token-redefinir-senha', methods=['POST'])
 def resetar_senha():
     data = request.get_json()
     email = data.get('email')
@@ -76,15 +76,75 @@ def resetar_senha():
     if not assessoria:
         return jsonify({'message': 'Email não encontrado'}), 404
 
-    # Gerar um código de redefinição de senha
-    reset_code = generate_reset_code()
+    # Gerar um código de redefinição de senha (token)
+    token_de_resetar_senha = generate_reset_code()
+
+    # Definir a data e hora de expiração para 5 minutos após a geração do token
+    data_de_expiracao_do_token_de_resetar_senha = datetime.now() + timedelta(minutes=5)
+
+    # Armazenar o token e a data de expiração na base de dados
+    assessoria.token_de_resetar_senha = token_de_resetar_senha
+    assessoria.data_de_expiracao_do_token_de_resetar_senha = data_de_expiracao_do_token_de_resetar_senha
 
     # Enviar o código por email
-    if send_reset_email(email, reset_code):
-        # Aqui você pode salvar o código de redefinição na base de dados para verificar posteriormente
+    if send_reset_email(email, token_de_resetar_senha):
+        db.session.commit()  # Salvar o token e a data de expiração na base de dados
         return jsonify({'message': 'Código de redefinição de senha enviado para o email.'}), 200
     else:
         return jsonify({'message': 'Erro ao enviar o código de redefinição de senha.'}), 500
+    
+@app.route('/assessoria/verificar-token-redefinir-senha', methods=['POST'])
+def verificar_token():
+    data = request.get_json()
+    email = data.get('email')
+    token = data.get('token')
+
+    # Verificar se o email existe na base de dados
+    assessoria = Assessoria.query.filter_by(email=email).first()
+    if not assessoria:
+        return jsonify({'message': 'Email não encontrado'}), 404
+
+    # Verificar se o token enviado pelo usuário é igual ao token na base de dados
+    if assessoria.token_de_resetar_senha != token:
+        return jsonify({'message': 'Token inválido'}), 400
+
+    # Verificar se o token está dentro do prazo de validade (5 minutos)
+    if assessoria.data_de_expiracao_do_token_de_resetar_senha < datetime.now():
+        return jsonify({'message': 'Token expirado'}), 400
+
+    return jsonify({'message': 'Token válido'}), 200
+
+@app.route('/assessoria/redefinir-senha', methods=['POST'])
+def redefinir_senha():
+    data = request.get_json()
+    email = data.get('email')
+    token = data.get('token')
+
+    # Verificar se o email existe na base de dados
+    assessoria = Assessoria.query.filter_by(email=email).first()
+    if not assessoria:
+        return jsonify({'message': 'Email não encontrado'}), 404
+
+    # Verificar se o token enviado pelo usuário é igual ao token na base de dados
+    if assessoria.token_de_resetar_senha != token:
+        return jsonify({'message': 'Token inválido'}), 400
+
+    # Verificar se o token está dentro do prazo de validade (5 minutos)
+    if assessoria.data_de_expiracao_do_token_de_resetar_senha < datetime.now():
+        return jsonify({'message': 'Token expirado'}), 400
+
+    hashed_password = generate_password_hash(data['nova_senha'], method='sha256')
+    # Atualizar a senha na base de dados
+    assessoria.senha = hashed_password
+
+    # Limpar o token de redefinição de senha e a data de expiração
+    assessoria.token_de_resetar_senha = None
+    assessoria.data_de_expiracao_do_token_de_resetar_senha = None
+
+    db.session.commit()  # Salvar a nova senha na base de dados
+
+    return jsonify({'message': 'Senha alterada com sucesso'}), 200
+
 
 #Mocker de Assessorias
 @app.route('/api/assessorias/<int:num_assessorias>', methods=['POST'])

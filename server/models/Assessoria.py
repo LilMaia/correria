@@ -12,12 +12,11 @@ class Assessoria(db.Model):
     numero_de_atletas = db.Column(db.Integer)
     data_cadastro = db.Column(db.Date)
     senha = db.Column(db.String(255))
+    token_de_resetar_senha = db.Column(db.String(255))
+    data_de_expiracao_do_token_de_resetar_senha = db.Column(db.DateTime)
 
-    # Relacionamento com treinadores
-    treinadores = db.relationship('Treinador', backref='assessoria_treinador', lazy='dynamic')
-
-    # Relacionamento com atletas
-    atletas = db.relationship('Atleta', backref='assessoria_atleta', lazy='dynamic')
+    treinadores = db.relationship('Treinador', back_populates='assessoria', viewonly=True)
+    atletas = db.relationship('Atleta', back_populates='assessoria', viewonly=True)
 
     def to_dict(self):
         return {
@@ -32,7 +31,9 @@ class Assessoria(db.Model):
             'data_cadastro': self.data_cadastro,
             'senha': self.senha,
             'treinadores': [treinador.to_dict() for treinador in self.treinadores],
-            'atletas': [atleta.to_dict() for atleta in self.atletas]
+            'atletas': [atleta.to_dict() for atleta in self.atletas],
+            'token_de_resetar_senha': self.token_de_resetar_senha,
+            'data_de_expiracao_do_token_de_resetar_senha': self.data_de_expiracao_do_token_de_resetar_senha
         }
 
 from models.Treinador import Treinador

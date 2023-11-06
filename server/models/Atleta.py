@@ -18,10 +18,10 @@ class Atleta(db.Model):
     volume_semanal_final = db.Column(db.Float)
     
     assessoria_id = db.Column(db.Integer, db.ForeignKey('assessoria.id'), nullable=False)
-    assessoria = db.relationship('Assessoria', backref='atletas_assessoria')
+    assessoria = db.relationship('Assessoria', back_populates='atletas', viewonly=True)
     
     treinador_id = db.Column(db.Integer, db.ForeignKey('treinador.id'), nullable=False)
-    treinador = db.relationship('Treinador', backref='atletas_treinador')
+    treinador = db.relationship('Treinador', back_populates='atletas', viewonly=True)
 
     def to_dict(self):
         return {

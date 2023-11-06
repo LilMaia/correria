@@ -14,9 +14,9 @@ class Treinador(db.Model):
     senha = db.Column(db.String(255))
     
     assessoria_id = db.Column(db.Integer, db.ForeignKey('assessoria.id'), nullable=False)
-    assessoria = db.relationship('Assessoria', backref='treinadores_assessoria')
+    assessoria = db.relationship('Assessoria', back_populates='treinadores', viewonly=True)
 
-    atletas = db.relationship('Atleta', backref='treinador_atleta', lazy='dynamic')
+    atletas = db.relationship('Atleta', back_populates='treinador', viewonly=True)
     
     def to_dict(self):
         return {

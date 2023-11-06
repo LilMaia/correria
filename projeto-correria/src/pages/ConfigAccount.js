@@ -46,7 +46,7 @@ const submitForm=(e)=>{
     estado:state,
     cidade:city
   }
-  //como fazer um fetch do tipo post na ENV_BASE_URL + "/assessoria/cadastro
+  
   
   try { 
     const response =  fetch(ENV_BASE_URL + "/assessoria/cadastro", {

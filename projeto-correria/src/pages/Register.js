@@ -17,35 +17,24 @@ function Register() {
   const handleOnName = (e) => {
     e.preventDefault();
     setName(e.target.value);
-    checkFormValidity();
+
   };
   const handleOnTelefone = (e) => {
     e.preventDefault();
     setTelefone(e.target.value);
-    checkFormValidity();
+ 
   };
   const handleOnEmail = (e) => {
     e.preventDefault();
     setEmail(e.target.value);
-    checkFormValidity();
+  
   };
   const handleOnPassword = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
-    checkFormValidity();
+  
   };
-  function checkFormValidity(){
- 
-    const isValid =
-      name.trim() !== "" &&
-      telefone.trim() !== "" &&
-      email.trim() !== "" &&
-      password.trim() !== "" 
-    
 
-    setIsButtonDisabled(!isValid);
-  };
- 
   const submitForm = (e) => {
     e.preventDefault();
     const userData = {
@@ -56,7 +45,7 @@ function Register() {
     };
     const userDataString = JSON.stringify(userData);
     localStorage.setItem('register', userDataString);
- 
+    window.location.href ='/configaccount'
 
   };
 

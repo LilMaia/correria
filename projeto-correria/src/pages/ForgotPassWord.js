@@ -4,24 +4,29 @@ import ImageForm from "../components/initial-page/ImageForm.js";
 import ButtonForm from "../components/initial-page/ButtonForm.js";
 import Texto from "../components/initial-page/Texto.js";
 import SubTexto from "../components/initial-page/SubTexto.js";
+import ModalForm from "../components/initial-page/ModalForm.js";
 import "../styles/initial-page//login.css";
 function ForgotPassWord() {
   const [userEmail, setUserEmail] = useState("");
   const handleOnChange = (e) => {
     e.preventDefault();
     setUserEmail(e.target.value);
-    
   };
-const handleNewPassword=(e)=>{
-  e.preventDefault();
-  const userData = {
-    email: userEmail,
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+
+  const handleNewPassword = (e) => {
+    e.preventDefault();
+    const userData = {
+      email: userEmail,
+    };
+    const userDataString = JSON.stringify(userData);
+    localStorage.setItem("user", userDataString);
+    setShow(true);
   };
-  const userDataString = JSON.stringify(userData);
-  localStorage.setItem('user', userDataString);
-}
   return (
-    <form onSubmit={handleNewPassword}className="form_body m-auto">
+    <form onSubmit={handleNewPassword} className="form_body m-auto">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Esqueci minha senha" />
@@ -38,6 +43,7 @@ const handleNewPassword=(e)=>{
         />
       </div>
       <ButtonForm text="Prosseguir" />
+      <ModalForm handleClose={handleClose} show={show} text="Prosseguir" />
     </form>
   );
 }

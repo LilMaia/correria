@@ -145,6 +145,15 @@ def redefinir_senha():
 
     return jsonify({'message': 'Senha alterada com sucesso'}), 200
 
+#rota para verificar se os dois campos de nova senha são iguais
+@app.route('/assessoria/validar-senhas-iguais', methods=['POST'])
+def verificar_senha():
+    data = request.get_json()
+    senha = data['senha']
+    confirmar_senha = data['confirmar_senha']
+    if senha == confirmar_senha:
+        return jsonify({'message': 'As senhas são iguais'}), 200
+    return jsonify({'message': 'As senhas não coincidem'}), 400
 
 #Mocker de Assessorias
 @app.route('/api/assessorias/<int:num_assessorias>', methods=['POST'])

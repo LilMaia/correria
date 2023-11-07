@@ -32,7 +32,7 @@ const handleSite=(e)=>{
   e.preventDefault();
   setwebsite(e.target.value)
 }
-const submitForm=(e)=>{
+const submitForm= async (e) =>{
   e.preventDefault();
   const userDataString = localStorage.getItem('register');
   const userData = JSON.parse(userDataString);
@@ -49,7 +49,7 @@ const submitForm=(e)=>{
   
   
   try { 
-    const response =  fetch(ENV_BASE_URL + "/assessoria/cadastro", {
+    const response = await fetch(ENV_BASE_URL + "/assessoria/cadastro", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

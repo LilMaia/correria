@@ -19,7 +19,7 @@ function ForgotPassWord() {
 
   const handleClose = () => setShow(false);
 
-  const handleNewPassword = (e) => {
+  const handleNewPassword = async (e) => {
     e.preventDefault();
     const userData = {
       email: userEmail,
@@ -27,12 +27,12 @@ function ForgotPassWord() {
     const userDataString = JSON.stringify(userData);
     localStorage.setItem("user", userDataString);
     try {
-      const response = fetch(ENV_BASE_URL + "/assessoria/erificar-email", {
+      const response = await fetch(ENV_BASE_URL + "/assessoria/verificar-email", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(userEmail),
+        body: userDataString, // Send the serialized user data, not just userEmail
       });
       if (response.ok) {
         setShow(true);
@@ -40,9 +40,10 @@ function ForgotPassWord() {
         setShowError(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
+
   return (
     <form onSubmit={handleNewPassword} className="form_body m-auto">
       <div className="d-flex flex-column ">

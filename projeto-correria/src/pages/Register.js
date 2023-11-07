@@ -13,26 +13,31 @@ function Register() {
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+
+  const [disable, setDisable] = useState(true);
+  const ableTheButton = () => {
+    const check = name && telefone && email && password;
+    setDisable(!check);
+  };
   const handleOnName = (e) => {
     e.preventDefault();
     setName(e.target.value);
-
+    ableTheButton();
   };
   const handleOnTelefone = (e) => {
     e.preventDefault();
     setTelefone(e.target.value);
- 
+    ableTheButton();
   };
   const handleOnEmail = (e) => {
     e.preventDefault();
     setEmail(e.target.value);
-  
+    ableTheButton();
   };
   const handleOnPassword = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
-  
+    ableTheButton();
   };
 
   const submitForm = (e) => {
@@ -44,9 +49,8 @@ function Register() {
       email: email,
     };
     const userDataString = JSON.stringify(userData);
-    localStorage.setItem('register', userDataString);
-    window.location.href ='/configaccount'
-
+    localStorage.setItem("register", userDataString);
+    window.location.href = "/configaccount";
   };
 
   return (
@@ -105,7 +109,7 @@ function Register() {
           </a>
         </small>
       </div>
-      <ButtonForm text="Criar conta" />
+      <ButtonForm text="Criar conta" disable={disable} />
       <p className="mt-1 ms-2 d-flex justify-content-center fs-6 p-2">
         <Link
           to="/login"

@@ -12,59 +12,68 @@ function ConfigAccount() {
   const [city, setCity] = useState("");
   const [website, setwebsite] = useState("");
   const [atletas, setAtletas] = useState("");
-const handleAcessoria=(e)=>{
-  e.preventDefault();
-  setAcessoria(e.target.value)
-}
-const handleAtleta=(e)=>{
-  e.preventDefault();
-  setAtletas(e.target.value)
-}
-const handleState=(e)=>{
-  e.preventDefault();
-  setState(e.target.value)
-}
-const handleCity=(e)=>{
-  e.preventDefault();
-  setCity(e.target.value)
-}
-const handleSite=(e)=>{
-  e.preventDefault();
-  setwebsite(e.target.value)
-}
-const submitForm= async (e) =>{
-  e.preventDefault();
-  const userDataString = localStorage.getItem('register');
-  const userData = JSON.parse(userDataString);
-  const accessData={
-    nome:acessoria,
-    site:website,
-    email:userData.email,
-    senha:userData.senha,
-    telefone:userData.telefone,
-    numero_de_atletas:atletas,
-    estado:state,
-    cidade:city
-  }
-  
-  
-  try { 
-    const response = await fetch(ENV_BASE_URL + "/assessoria/cadastro", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(accessData),
-    });
+  const [disable, setDisable] = useState(true);
+  const ableTheButton = () => {
+    const check = state && acessoria && website && atletas;
+    setDisable(!check);
+  };
+  const handleAcessoria = (e) => {
+    e.preventDefault();
+    setAcessoria(e.target.value);
+    ableTheButton();
+  };
+  const handleAtleta = (e) => {
+    e.preventDefault();
+    setAtletas(e.target.value);
+    ableTheButton();
+  };
+  const handleState = (e) => {
+    e.preventDefault();
+    setState(e.target.value);
+    ableTheButton();
+  };
+  const handleCity = (e) => {
+    e.preventDefault();
+    setCity(e.target.value);
+    ableTheButton();
+  };
+  const handleSite = (e) => {
+    e.preventDefault();
+    setwebsite(e.target.value);
+    ableTheButton();
+  };
+  const submitForm = async (e) => {
+    e.preventDefault();
+    const userDataString = localStorage.getItem("register");
+    const userData = JSON.parse(userDataString);
+    const accessData = {
+      nome: acessoria,
+      site: website,
+      email: userData.email,
+      senha: userData.senha,
+      telefone: userData.telefone,
+      numero_de_atletas: atletas,
+      estado: state,
+      cidade: city,
+    };
 
-    // Aqui você pode lidar com a resposta, por exemplo:
-    const data =  response.json();
-    console.log(data);
-  } catch (error) {
-    console.log(error);}
-  console.log(accessData)
+    try {
+      const response = await fetch(ENV_BASE_URL + "/assessoria/cadastro", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(accessData),
+      });
 
-}
+      // Aqui você pode lidar com a resposta, por exemplo:
+      const data = response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(accessData);
+  };
   return (
     <form onSubmit={submitForm} className="form_body m-auto">
       <div className="d-flex flex-column ">
@@ -104,7 +113,7 @@ const submitForm= async (e) =>{
         />
       </div>
 
-      <ButtonForm text="Avançar" />
+      <ButtonForm text="Avançar" disable={disable} />
     </form>
   );
 }

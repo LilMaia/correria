@@ -47,19 +47,52 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
     const newValue = e.target.value.trim();
     setSixth(newValue);
   };
-  const handleSubmit = (e) => {
+  const genereteCodeAgain = async () => {
+    setShowAlert(false);
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const newCode = {
+      email: userData.email,
+    };
+    try {
+      const response = await fetch(
+        ENV_BASE_URL + "/assessoria/gerar-token-redefinir-senha",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCode),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
     const codigo = first + second + third + fourth + fifth + sixth;
     console.log(codigo);
+    const userCodde = {
+      code: codigo,
+      email: userData.email,
+    };
+    const userCodeString = JSON.stringify(userCodde);
+    localStorage.setItem("code", userCodeString);
 
     try {
-      const response = fetch(ENV_BASE_URL + "/assessoria/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(codigo),
-      });
+      const response = await fetch(
+        ENV_BASE_URL + "/assessoria/verificar-token-redefinir-senha",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(codigo),
+        }
+      );
 
       if (response.ok) {
         window.location.href = "/newpassword";
@@ -128,20 +161,26 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
               type="text"
             />
           </div>
-          {showAlert && (
-            <small className="d-flex align-items-center justify-content-between mt-3">
-              <div className="d-flex align-items-center gap-1  ">
-                <IoAlertCircleOutline className="text-danger fw-bold" />
-                <span className="text-danger ">Código inválido</span>
-              </div>
+          <div className="d-flex align-items-center justify-content-between">
+            {showAlert && (
+              <small className=" mt-3">
+                <div className="d-flex align-items-center gap-1  ">
+                  <IoAlertCircleOutline className="text-danger fw-bold" />
+                  <span className="text-danger ">Código inválido.</span>
+                </div>
+              </small>
+            )}
+
+            <small className=" mt-3">
               <a
+                onClick={genereteCodeAgain}
                 href="/"
                 className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
               >
                 Reenviar código
               </a>
             </small>
-          )}
+          </div>
         </Modal.Body>
         <Modal.Footer className="border border-0">
           <Button

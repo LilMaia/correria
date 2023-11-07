@@ -11,6 +11,7 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 function ForgotPassWord() {
   const [userEmail, setUserEmail] = useState("");
   const [showError, setShowError] = useState(false);
+
   const handleOnChange = (e) => {
     e.preventDefault();
     setUserEmail(e.target.value);
@@ -18,7 +19,23 @@ function ForgotPassWord() {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-
+  const genereteCode = async () => {
+    try {
+      const response = await fetch(
+        ENV_BASE_URL + "/assessoria/gerar-token-redefinir-senha",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(userEmail),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  
   const handleNewPassword = async (e) => {
     e.preventDefault();
     const userData = {
@@ -26,21 +43,27 @@ function ForgotPassWord() {
     };
     const userDataString = JSON.stringify(userData);
     localStorage.setItem("user", userDataString);
+  
     try {
-      const response = await fetch(ENV_BASE_URL + "/assessoria/verificar-email", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: userDataString, // Send the serialized user data, not just userEmail
-      });
+      const response = await fetch(
+        ENV_BASE_URL + "/assessoria/verificar-email",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: userDataString, // Send the serialized user data, not just userEmail
+        }
+      );
       if (response.ok) {
         setShow(true);
+        genereteCode();
       } else {
         setShowError(true);
       }
     } catch (error) {
       console.error(error);
+      setShowError(true);
     }
   };
 

@@ -62,6 +62,7 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
       });
 
       if (response.ok) {
+        window.location.href = "/newpassword";
       } else {
         setShowAlert(true);
       }
@@ -83,6 +84,7 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
               </Col>
             </Row>
           </Container>
+          <p className="fw-bold fs-3 text-center mt-2">Código Enviado!</p>
           <p className="mt-3 p-2">
             Enviamos um código verficador para seu e-mail (confira a caixa de
             spam). Por favor, digite ocódigo abaixo:
@@ -126,20 +128,27 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
               type="text"
             />
           </div>
-          {showAlert &&
-          <small className="d-flex align-items-center justify-content-between mt-3">
-            <div  className="d-flex align-items-center gap-1  ">
-            <IoAlertCircleOutline className="text-danger fw-bold" />
-            <span  className="text-danger ">Código inválido</span></div>
-            <a href="/" className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover">Reenviar código</a>
-          </small>}
-        
+          {showAlert && (
+            <small className="d-flex align-items-center justify-content-between mt-3">
+              <div className="d-flex align-items-center gap-1  ">
+                <IoAlertCircleOutline className="text-danger fw-bold" />
+                <span className="text-danger ">Código inválido</span>
+              </div>
+              <a
+                href="/"
+                className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
+              >
+                Reenviar código
+              </a>
+            </small>
+          )}
         </Modal.Body>
         <Modal.Footer className="border border-0">
           <Button
             className="m-auto text-white rounded-1"
             variant="dark"
             onClick={handleSubmit}
+            type="submit"
           >
             {text}
           </Button>

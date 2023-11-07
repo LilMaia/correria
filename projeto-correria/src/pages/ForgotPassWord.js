@@ -6,8 +6,11 @@ import Texto from "../components/initial-page/Texto.js";
 import SubTexto from "../components/initial-page/SubTexto.js";
 import ModalForm from "../components/initial-page/ModalForm.js";
 import "../styles/initial-page//login.css";
+import { ENV_BASE_URL } from "../env/enviroment";
+import { IoAlertCircleOutline } from "react-icons/io5";
 function ForgotPassWord() {
   const [userEmail, setUserEmail] = useState("");
+  const [showError, setShowError] = useState(false);
   const handleOnChange = (e) => {
     e.preventDefault();
     setUserEmail(e.target.value);
@@ -23,7 +26,22 @@ function ForgotPassWord() {
     };
     const userDataString = JSON.stringify(userData);
     localStorage.setItem("user", userDataString);
-    setShow(true);
+    try {
+      const response = fetch(ENV_BASE_URL + "/assessoria/erificar-email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userEmail),
+      });
+      if (response.ok) {
+        setShow(true);
+      } else {
+        setShowError(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <form onSubmit={handleNewPassword} className="form_body m-auto">
@@ -42,6 +60,18 @@ function ForgotPassWord() {
           handleOnChange={handleOnChange}
         />
       </div>
+
+      {showError && (
+        <small className="d-flex align-items-center justify-content-between p-2 mb-4">
+          <div className="d-flex align-items-center gap-1  ">
+            <IoAlertCircleOutline className="text-danger fw-bold" />
+            <span className="text-danger ">
+              Email inválido ou não cadastrado.
+            </span>
+          </div>
+        </small>
+      )}
+
       <ButtonForm text="Prosseguir" />
       <ModalForm handleClose={handleClose} show={show} text="Prosseguir" />
     </form>

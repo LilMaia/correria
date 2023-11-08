@@ -76,8 +76,8 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
     const codigo = first + second + third + fourth + fifth + sixth;
     console.log(codigo);
     const userCodde = {
-      code: codigo,
       email: userData.email,
+      token: codigo,
     };
     const userCodeString = JSON.stringify(userCodde);
     localStorage.setItem("code", userCodeString);
@@ -90,7 +90,7 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(codigo),
+          body: JSON.stringify(userCodde),
         }
       );
 

@@ -53,15 +53,14 @@ function NewPassword() {
     const userCode = JSON.parse(userCodeString);
     const newUserPassword = {
       email: userData.email,
-      senha: userPassword,
-      confirmsenha: newPassword,
-      token: userCode.code,
+      token: userCode.token,
+      nova_senha: newPassword,
     };
     try {
       const response = await fetch(
-        ENV_BASE_URL + "/assessoria/erificar-email",
+        ENV_BASE_URL + "/assessoria/redefinir-senha",
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },

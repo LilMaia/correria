@@ -20,6 +20,9 @@ function ForgotPassWord() {
 
   const handleClose = () => setShow(false);
   const genereteCode = async () => {
+    const email = {
+      email: userEmail,
+    }
     try {
       const response = await fetch(
         ENV_BASE_URL + "/assessoria/gerar-token-redefinir-senha",
@@ -28,7 +31,7 @@ function ForgotPassWord() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(userEmail),
+          body: JSON.stringify(email),
         }
       );
     } catch (error) {

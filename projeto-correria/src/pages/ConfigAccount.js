@@ -6,6 +6,7 @@ import SelectForm from "../components/initial-page/SelectForm.js";
 import "../styles/initial-page//configaccount.css";
 import { useState } from "react";
 import { ENV_BASE_URL } from "../env/enviroment";
+import ModalError from "../components/initial-page/ModalError.js";
 function ConfigAccount() {
   const [state, setState] = useState("");
   const [acessoria, setAcessoria] = useState("");
@@ -13,6 +14,9 @@ function ConfigAccount() {
   const [website, setwebsite] = useState("");
   const [atletas, setAtletas] = useState("");
   const [disable, setDisable] = useState(true);
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
   const ableTheButton = () => {
     const check = state && acessoria && website && atletas;
     setDisable(!check);
@@ -65,14 +69,19 @@ function ConfigAccount() {
         },
         body: JSON.stringify(accessData),
       });
+      if (response.ok) {
+        window.location.href = "/login"
+      }
+      else {
+        setShow(true)
+      }
 
-      // Aqui você pode lidar com a resposta, por exemplo:
-      const data = response.json();
-      console.log(data);
+
     } catch (error) {
       console.log(error);
+      setShow(true);
     }
-    console.log(accessData);
+
   };
   return (
     <form onSubmit={submitForm} className="form_body m-auto">
@@ -113,7 +122,8 @@ function ConfigAccount() {
         />
       </div>
 
-      <ButtonForm text="Avançar" disable={disable} />
+      <ButtonForm text="Avançar" />
+      <ModalError handleClose={handleClose} show={show} />
     </form>
   );
 }

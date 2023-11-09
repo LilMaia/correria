@@ -8,18 +8,15 @@ import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "../styles/initial-page/configaccount.css";
-import ModalConfigAccount from "../components/initial-page/ModalConfigAccount.js";
-import ModalError from "../components/initial-page/ModalError.js";
+
+
 function Register() {
   const [name, setName] = useState("");
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showError, setShowError] = useState(false);
-  const [show, setShow] = useState(false);
-
   const [disable, setDisable] = useState(true);
-  const handleClose = () => setShow(false);
+ 
   const ableTheButton = () => {
     const check = name && telefone && email && password;
     setDisable(!check);
@@ -55,7 +52,7 @@ function Register() {
     };
     const userDataString = JSON.stringify(userData);
     localStorage.setItem("register", userDataString);
-    setShow(true);
+   window.location.href="/configaccount"
   };
 
   return (
@@ -114,7 +111,7 @@ function Register() {
           </a>
         </small>
       </div>
-      <ButtonForm text="Criar conta" disable={disable} />
+      <ButtonForm text="Criar conta" />
       <p className="mt-1 ms-2 d-flex justify-content-center fs-6 p-2">
         <Link
           to="/login"
@@ -123,8 +120,8 @@ function Register() {
           <small>Já tenho conta</small>
         </Link>
       </p>
-      <ModalConfigAccount handleClose={handleClose} show={show}  />
-      <ModalError handleClose={handleClose} show={showError}  />
+  
+ 
     </form>
   );
 }

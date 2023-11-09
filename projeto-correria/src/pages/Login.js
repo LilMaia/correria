@@ -7,19 +7,27 @@ import React, { useState } from "react";
 import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
 import "../styles/initial-page//login.css";
+import { IoAlertCircleOutline } from "react-icons/io5";
+import ModalGenerics from "../components/initial-page/ModalGenerics.js";
 import { ENV_BASE_URL } from "../env/enviroment";
 function Login() {
   const [formInfo, setFormInfo] = useState("");
   const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
   const handleOnChange = (e) => {
     e.preventDefault();
     setFormInfo(e.target.value);
+    setShowError(false)
   };
   //faça um useSate 
-  
+
   const handlePasswordChange = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
+    setShowError(false)
   };
   const handleLogin = async (event) => {
     event.preventDefault();
@@ -28,7 +36,7 @@ function Login() {
       email: formInfo,
       senha: password,
     };
-    console.log(loginData);
+
     try {
       const response = await fetch(ENV_BASE_URL + "/assessoria/login", {
         method: "POST",
@@ -40,10 +48,16 @@ function Login() {
 
       if (response.ok) {
         const data = await response.json();
-     
+        setShow(true)
+
+      }
+      else{
+        setShowError(true)
       }
     } catch (error) {
       console.log(error);
+      setShowError(true)
+    
     }
   };
   return (
@@ -62,7 +76,13 @@ function Login() {
         placeholder="email@email.com"
         handleOnChange={handleOnChange}
       />
-      <InputPassword text="Senha" handlePasswordChange={handlePasswordChange}  />
+      <InputPassword text="Senha" handlePasswordChange={handlePasswordChange} />
+      {showError && (<small className="d-flex align-items-center justify-content-between p-2 mb-4">
+        <div className="d-flex align-items-center gap-1  ">
+          <IoAlertCircleOutline className="text-danger fw-bold" />
+          <span className="text-danger ">Email e/ou senha inválidos.</span>
+        </div>
+      </small>)}
       <p className="mb-4 ms-2 d-flex justify-content-end p-2">
         <Link
           to="/forgotpassword"
@@ -80,6 +100,7 @@ function Login() {
           Quero me cadastrar gratuitamente
         </Link>
       </p>
+      <ModalGenerics show={show} text="Login realizado com sucesso" handleClose={handleClose}/>
     </form>
   );
 }

@@ -2,9 +2,8 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-
 import Row from "react-bootstrap/Row";
-import "./modalconfirmation.css";
+import "./modalerror.css";
 
 import { BsPersonFillSlash } from "react-icons/bs";
 
@@ -28,7 +27,7 @@ function ModalError({ handleClose, show }) {
           </Container>
           <p className="fw-bold fs-3 text-center mt-2">     Ops, sua conta ainda não foi criada</p>
           <p className="mt-3 p-2">
-   Ocorreu um erro inesperado. Você pode tentar novamente e caso o erro persista, entre em contato conosco.
+            Ocorreu um erro inesperado. Você pode tentar novamente e caso o erro persista, entre em contato conosco.
           </p>
         </Modal.Body>
         <Modal.Footer className="border border-0">
@@ -37,7 +36,7 @@ function ModalError({ handleClose, show }) {
             variant="dark"
             onClick={changePage}
           >
-         Tentar Novamente
+            Tentar Novamente
           </Button>
         </Modal.Footer>
       </Modal>

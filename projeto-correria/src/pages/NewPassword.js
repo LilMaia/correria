@@ -74,6 +74,7 @@ function NewPassword() {
       }
     } catch (error) {
       console.log(error);
+      setShowError(true);
     }
   };
 
@@ -86,7 +87,7 @@ function NewPassword() {
       <SubTexto texto="Vamos criar uma nova senha" />
       
       <InputPassword handlePasswordChange={handlePassword} text="Nova Senha" />
-      <small className="d-flex flex-column mb-2 p-2">
+      {/* <small className="d-flex flex-column mb-2 p-2">
         
         <div className="d-flex align-items-center gap-1  ">
         {maiuscula ?  <BsCheck2 className="fw-bold" /> :<IoAlertCircleOutline className="text-danger fw-bold" /> }
@@ -108,7 +109,7 @@ function NewPassword() {
          
           <span className="text-dark ">Possui mais de 8 caracteres</span>
         </div>
-      </small>
+      </small> */}
       <InputPassword
         handlePasswordChange={handlePasswordChange}
         text="Repita a Senha"
@@ -122,7 +123,7 @@ function NewPassword() {
           </div>
         </small>
       )}
-      <ButtonForm text="Alterar Senha" disable={disable} />
+      <ButtonForm text="Alterar Senha" />
     </form>
   );
 }

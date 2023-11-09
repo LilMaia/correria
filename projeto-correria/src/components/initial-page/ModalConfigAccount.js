@@ -6,7 +6,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import "./modalconfirmation.css";
 
-import { BsCheck2 } from "react-icons/bs";
+import { BsPersonCheckFill } from "react-icons/bs";
 
 function ModalConfigAccount({ handleClose, show }) {
   const changePage = () => {
@@ -21,7 +21,7 @@ function ModalConfigAccount({ handleClose, show }) {
             <Row className="d-flex justify-content-center align-items-center ">
               <Col xs={6} md={4}>
                 <div className="image_modal  ">
-                  <BsCheck2 className="icon_size fw-bold" />
+                  <BsPersonCheckFill className="icon_size fw-bold" />
                 </div>
               </Col>
             </Row>

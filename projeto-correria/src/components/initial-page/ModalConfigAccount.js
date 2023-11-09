@@ -8,7 +8,7 @@ import "./modalconfirmation.css";
 
 import { BsCheck2 } from "react-icons/bs";
 
-function ModalConfirmation({ handleClose, show }) {
+function ModalConfigAccount({ handleClose, show }) {
   const changePage = () => {
     window.location.href = "/configaccount";
   };
@@ -45,4 +45,4 @@ function ModalConfirmation({ handleClose, show }) {
   );
 }
 
-export default ModalConfirmation;
+export default ModalConfigAccount;

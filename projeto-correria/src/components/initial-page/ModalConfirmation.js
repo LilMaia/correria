@@ -26,10 +26,9 @@ function ModalConfirmation({ handleClose, show }) {
               </Col>
             </Row>
           </Container>
-          <p className="fw-bold fs-3 text-center mt-2">Código Enviado!</p>
+          <p className="fw-bold fs-3 text-center mt-2">Senha alterada!</p>
           <p className="mt-3 p-2">
-            Enviamos um código verficador para seu e-mail (confira a caixa de
-            spam). Por favor, digite ocódigo abaixo:
+          Sua senha foi alterada com sucesso. Clique no botão abaixo para fazer login.
           </p>
         </Modal.Body>
         <Modal.Footer className="border border-0">

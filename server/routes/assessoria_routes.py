@@ -155,6 +155,38 @@ def verificar_senha():
         return jsonify({'message': 'As senhas são iguais'}), 200
     return jsonify({'message': 'As senhas não coincidem'}), 400
 
+#rota para atualizar os dados da assessoria
+@app.route('/assessoria/atualizar/<int:id>', methods=['PUT'])
+@jwt_required()
+def atualizar_assessoria(id):
+    # Get the request data in JSON format
+    data = request.get_json()
+
+    # Retrieve the Assessoria object by its ID
+    assessoria = Assessoria.query.get(id)
+
+    # Check if the Assessoria object exists
+    if not assessoria:
+        return jsonify({"message": "Assessoria not found"}), 404
+
+    # Update Assessoria object with the provided data
+    assessoria.nome = data.get('nome', assessoria.nome)
+    assessoria.email = data.get('email', assessoria.email)
+    assessoria.telefone = data.get('telefone', assessoria.telefone)
+    assessoria.site = data.get('site', assessoria.site)
+    assessoria.estado = data.get('estado', assessoria.estado)
+    assessoria.cidade = data.get('cidade', assessoria.cidade)
+    assessoria.numero_de_atletas = data.get('numero_de_atletas', assessoria.numero_de_atletas)
+    assessoria.senha = data.get('senha', assessoria.senha)
+    assessoria.token_de_resetar_senha = data.get('token_de_resetar_senha', assessoria.token_de_resetar_senha)
+    assessoria.data_de_expiracao_do_token_de_resetar_senha = data.get('data_de_expiracao_do_token_de_resetar_senha', assessoria.data_de_expiracao_do_token_de_resetar_senha)
+
+    # Commit changes to the database
+    db.session.commit()
+
+    # Return a success message
+    return jsonify({"message": "Assessoria updated successfully"}), 200
+
 #Mocker de Assessorias
 @app.route('/api/assessorias/<int:num_assessorias>', methods=['POST'])
 def generate_assessorias(num_assessorias):

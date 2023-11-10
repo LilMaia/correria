@@ -37,13 +37,12 @@ function NewPassword() {
   const handlePasswordChange = (e) => {
     e.preventDefault();
     setuserPassword(e.target.value);
-    ableTheButton();
+  
   };
   const handlePassword = (e) => {
     e.preventDefault();
     setNewPassword(e.target.value);
-    verifySenha();
-    ableTheButton();
+
   };
   const verifySmaePass = async (e) => {
     e.preventDefault();
@@ -72,8 +71,8 @@ function NewPassword() {
       setShowError(true);
     }
   }
-  const handleNewPassword = async (e) => {
-    e.preventDefault();
+  const handleNewPassword = async () => {
+
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const userCodeString = localStorage.getItem("code");
@@ -106,14 +105,14 @@ function NewPassword() {
   };
 
   return (
-    <form onSubmit={handleNewPassword} className="form_body m-auto">
+    <form onSubmit={verifySmaePass} className="form_body m-auto">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Estamos quase lá :)" />
       </div>
       <SubTexto texto="Vamos criar uma nova senha" />
 
-      <InputPassword handlePasswordChange={verifySmaePass} text="Nova Senha" />
+      <InputPassword handlePasswordChange={handlePassword} text="Nova Senha" />
       {/* <small className="d-flex flex-column mb-2 p-2">
         
         <div className="d-flex align-items-center gap-1  ">

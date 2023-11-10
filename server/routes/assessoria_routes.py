@@ -9,11 +9,22 @@ from mockers.assessoria_mocker import add_random_assessorias_to_db
 from utils.assessoria.gerar_codigo_email import generate_reset_code
 from utils.assessoria.enviar_email import send_reset_email
 from datetime import datetime, timedelta
+from marshmallow import ValidationError
+from validators.acessoria_validator import AssessoriaSchema
 
 # Rota para cadastro de uma nova Assesoria
 @app.route('/assessoria/cadastro', methods=['POST'])
 def cadastrar_assesoria():
     data = request.get_json()
+    
+    # Crie uma instância do AssessoriaSchema e utilize o método load
+    schema = AssessoriaSchema()
+    
+    try:
+        schema.load(data)
+    except ValidationError as err:
+        return jsonify({'error': err.messages}), 400
+    
     hashed_password = generate_password_hash(data['senha'], method='sha256')
     nova_assesoria = Assessoria(
         nome=data['nome'],

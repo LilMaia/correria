@@ -8,6 +8,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required
 import secrets
 from datetime import timedelta
+from flask_marshmallow import Marshmallow
 
 jwt_secret_key = secrets.token_hex(32) 
 
@@ -18,5 +19,6 @@ app.config['JWT_ACCESS_TOKEN_EXPIRES'] = timedelta(hours=1)
 app.config['JWT_SECRET_KEY'] = jwt_secret_key  # Chave secreta para geração de token JWT
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
+ma = Marshmallow(app)
 
 migrate = Migrate(app, db)

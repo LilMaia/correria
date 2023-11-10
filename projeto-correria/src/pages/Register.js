@@ -8,6 +8,7 @@ import ButtonGoogle from "../components/initial-page/ButtonGoogle.js";
 import { Link } from "react-router-dom";
 import React, { useState } from "react";
 import "../styles/initial-page/configaccount.css";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 
 function Register() {
@@ -15,16 +16,24 @@ function Register() {
   const [telefone, setTelefone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [disable, setDisable] = useState(true);
+  const [showError, setShowError] = useState(false);
  
-  const ableTheButton = () => {
-    const check = name && telefone && email && password;
-    setDisable(!check);
+ 
+  const validateform = (e) => {
+    e.preventDefault();
+    const check = name && email && password;
+    if(check){
+      submitForm()
+    }
+else{
+  setShowError(true)
+}
   };
   const handleOnName = (e) => {
     e.preventDefault();
     setName(e.target.value);
-    ableTheButton();
+    setShowError(false)
+ 
   };
   const handleOnTelefone = (e) => {
     e.preventDefault();
@@ -34,16 +43,18 @@ function Register() {
   const handleOnEmail = (e) => {
     e.preventDefault();
     setEmail(e.target.value);
-    ableTheButton();
+    setShowError(false)
+   
   };
   const handleOnPassword = (e) => {
     e.preventDefault();
     setPassword(e.target.value);
-    ableTheButton();
+    setShowError(false)
+   
   };
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  const submitForm = () => {
+   
     const userData = {
       name: name,
       telefone: telefone,
@@ -56,7 +67,7 @@ function Register() {
   };
 
   return (
-    <form onSubmit={submitForm} className="form_body m-auto ">
+    <form onSubmit={validateform} className="form_body m-auto ">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Crie sua conta" />
@@ -111,6 +122,14 @@ function Register() {
           </a>
         </small>
       </div>
+      {showError && (
+        <small className="d-flex align-items-center justify-content-between p-2 mb-4">
+          <div className="d-flex align-items-center gap-1  ">
+            <IoAlertCircleOutline className="text-danger fw-bold" />
+            <span className="text-danger ">Preencha os campos de nome, e-mail e senha antes de prosseguir.</span>
+          </div>
+        </small>
+      )}
       <ButtonForm text="Criar conta" />
       <p className="mt-1 ms-2 d-flex justify-content-center fs-6 p-2">
         <Link

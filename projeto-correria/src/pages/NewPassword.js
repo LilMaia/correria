@@ -18,9 +18,9 @@ function NewPassword() {
   const [especial, setEspecial] = useState(false);
   const [comprimento, setComprimento] = useState("");
   const [numero, setNumero] = useState(false);
-  const[disable,setDisable]=useState(true)
-  const ableTheButton=()=>{
-    const check=maiuscula && especial&&numero&&userPassword&&newPassword;
+  const [disable, setDisable] = useState(true)
+  const ableTheButton = () => {
+    const check = maiuscula && especial && numero && userPassword && newPassword;
     setDisable(!check);
   };
   const verifySenha = () => {
@@ -30,7 +30,7 @@ function NewPassword() {
     setEspecial(contemEspeciais);
     const contemNumeros = /[0-9]/.test(newPassword);
     setNumero(contemNumeros);
-    const tamanho =newPassword.length ;
+    const tamanho = newPassword.length;
     setComprimento(tamanho);
     ableTheButton();
   };
@@ -45,6 +45,33 @@ function NewPassword() {
     verifySenha();
     ableTheButton();
   };
+  const verifySmaePass = async (e) => {
+    e.preventDefault();
+    const chekPass = {
+      senha: newPassword,
+      confirmar_senha: userPassword
+    }
+    try {
+      const response = await fetch(
+        ENV_BASE_URL + "assessoria/validar-senhas-iguais",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(chekPass),
+        }
+      );
+      if (response.ok) {
+        handleNewPassword();
+      } else {
+        setShowError(true);
+      }
+    } catch (error) {
+      console.log(error);
+      setShowError(true);
+    }
+  }
   const handleNewPassword = async (e) => {
     e.preventDefault();
     const userDataString = localStorage.getItem("user");
@@ -85,8 +112,8 @@ function NewPassword() {
         <Texto texto="Estamos quase lá :)" />
       </div>
       <SubTexto texto="Vamos criar uma nova senha" />
-      
-      <InputPassword handlePasswordChange={handlePassword} text="Nova Senha" />
+
+      <InputPassword handlePasswordChange={verifySmaePass} text="Nova Senha" />
       {/* <small className="d-flex flex-column mb-2 p-2">
         
         <div className="d-flex align-items-center gap-1  ">

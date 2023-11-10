@@ -15,6 +15,7 @@ function ForgotPassWord() {
   const handleOnChange = (e) => {
     e.preventDefault();
     setUserEmail(e.target.value);
+    setShowError(false)
   };
   const [show, setShow] = useState(false);
 

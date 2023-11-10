@@ -47,7 +47,8 @@ function ModalForm({ handleClose, show, text, handleOnChange }) {
     const newValue = e.target.value.trim();
     setSixth(newValue);
   };
-  const genereteCodeAgain = async () => {
+  const genereteCodeAgain = async (e) => {
+    e.preventDefault();
     setShowAlert(false);
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);

@@ -6,6 +6,7 @@ import SelectForm from "../components/initial-page/SelectForm.js";
 import "../styles/initial-page//configaccount.css";
 import { useState } from "react";
 import { ENV_BASE_URL } from "../env/enviroment";
+import { IoAlertCircleOutline } from "react-icons/io5";
 import ModalError from "../components/initial-page/ModalError.js";
 function ConfigAccount() {
   const [state, setState] = useState("");
@@ -15,39 +16,50 @@ function ConfigAccount() {
   const [atletas, setAtletas] = useState("");
   const [disable, setDisable] = useState(true);
   const [show, setShow] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const handleClose = () => setShow(false);
-  const ableTheButton = () => {
-    const check = state && acessoria && website && atletas;
-    setDisable(!check);
+  const validateform = (e) => {
+    e.preventDefault();
+    const check = state && acessoria && city && website && atletas;
+    if(check){
+      submitForm()
+    }
+else{
+  setShowError(true)
+}
   };
   const handleAcessoria = (e) => {
     e.preventDefault();
     setAcessoria(e.target.value);
-    ableTheButton();
+    setShowError(false)
+ 
   };
   const handleAtleta = (e) => {
     e.preventDefault();
     setAtletas(e.target.value);
-    ableTheButton();
+    setShowError(false)
+ 
   };
   const handleState = (e) => {
     e.preventDefault();
     setState(e.target.value);
-    ableTheButton();
+    setShowError(false)
   };
   const handleCity = (e) => {
     e.preventDefault();
     setCity(e.target.value);
-    ableTheButton();
+    setShowError(false)
+ 
   };
   const handleSite = (e) => {
     e.preventDefault();
     setwebsite(e.target.value);
-    ableTheButton();
+    setShowError(false)
+ 
   };
   const submitForm = async (e) => {
-    e.preventDefault();
+ 
     const userDataString = localStorage.getItem("register");
     const userData = JSON.parse(userDataString);
     const accessData = {
@@ -84,7 +96,7 @@ function ConfigAccount() {
 
   };
   return (
-    <form onSubmit={submitForm} className="form_body m-auto">
+    <form onSubmit={validateform} className="form_body m-auto">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Configure sua conta" />
@@ -121,7 +133,14 @@ function ConfigAccount() {
           handleOnChange={handleAtleta}
         />
       </div>
-
+      {showError && (
+        <small className="d-flex align-items-center justify-content-between p-2 mb-4">
+          <div className="d-flex align-items-center gap-1  ">
+            <IoAlertCircleOutline className="text-danger fw-bold" />
+            <span className="text-danger ">Preencha todos os campos antes de prosseguir.</span>
+          </div>
+        </small>
+      )}
       <ButtonForm text="Avançar" />
       <ModalError handleClose={handleClose} show={show} />
     </form>

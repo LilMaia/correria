@@ -5,7 +5,7 @@
     align-items: center;
     width: 110px;
     height: 110px;
-    background-color:#7DDF64;
+    background-color:#7DDF64 !important;
 }
 .icon_size{
   width: 2.5em !important;

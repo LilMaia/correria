@@ -41,27 +41,8 @@ function NewPassword() {
     setShowError(false);
 
   };
-  const genereteCodeAgain = async (e) => {
-    e.preventDefault();
-    const userDataString = localStorage.getItem("user");
-    const userData = JSON.parse(userDataString);
-    const newCode = {
-      email: userData.email,
-    };
-    try {
-      const response = await fetch(
-        ENV_BASE_URL + "/assessoria/gerar-token-redefinir-senha",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(newCode),
-        }
-      );
-    } catch (error) {
-      console.log(error);
-    }
+  const genereteCodeAgain = () => {
+    window.location.href = "/forgotpassword"
   };
   const handlePassword = (e) => {
     e.preventDefault();

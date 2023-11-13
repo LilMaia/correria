@@ -84,6 +84,7 @@ function ForgotPassWord() {
           type="email"
           text="E-mail"
           name="email"
+          value={userEmail}
           placeholder="email@email.com"
           handleOnChange={handleOnChange}
         />

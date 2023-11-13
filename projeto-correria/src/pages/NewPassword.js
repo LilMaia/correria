@@ -39,11 +39,10 @@ function NewPassword() {
     e.preventDefault();
     setuserPassword(e.target.value);
     setShowError(false);
-  
+
   };
   const genereteCodeAgain = async (e) => {
     e.preventDefault();
-    setShowAlert(false);
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const newCode = {
@@ -70,7 +69,7 @@ function NewPassword() {
     setShowError(false);
 
   };
-  const verifySmaePass = async (e) => {
+  const verifySamePass = async (e) => {
     e.preventDefault();
     const chekPass = {
       senha: newPassword,
@@ -78,7 +77,7 @@ function NewPassword() {
     }
     try {
       const response = await fetch(
-        ENV_BASE_URL + "assessoria/validar-senhas-iguais",
+        ENV_BASE_URL + "/assessoria/validar-senhas-iguais",  // Added a slash after ENV_BASE_URL
         {
           method: "POST",
           headers: {
@@ -98,7 +97,7 @@ function NewPassword() {
     }
   }
   const handleNewPassword = async (e) => {
-e.preventDefault();
+    e.preventDefault();
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const userCodeString = localStorage.getItem("code");
@@ -131,7 +130,7 @@ e.preventDefault();
   };
 
   return (
-    <form onSubmit={verifySmaePass} className="form_body m-auto">
+    <form onSubmit={verifySamePass} className="form_body m-auto">
       <div className="d-flex flex-column ">
         <ImageForm />
         <Texto texto="Estamos quase lá :)" />
@@ -175,19 +174,19 @@ e.preventDefault();
           </div>
         </small>
       )}
-            {showToken && (
+      {showToken && (
         <small className="d-flex align-items-center justify-content-between p-2 mb-4">
-          <div className="d-flex align-items-center gap-1  ">
+          <div className="d-flex align-items-center gap-1 justify-content-between p-2 mb-4 ">
             <IoAlertCircleOutline className="text-danger fw-bold" />
             <span className="text-danger ">Token inválido ou expirado
-            .</span>
-            <span>     <a
-                onClick={genereteCodeAgain}
-                href="/"
-                className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
-              >
-                Reenviar código
-              </a></span>
+              .</span>
+            <span >     <a
+              onClick={genereteCodeAgain}
+              href="/"
+              className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
+            >
+              Reenviar código
+            </a></span>
           </div>
         </small>
       )}

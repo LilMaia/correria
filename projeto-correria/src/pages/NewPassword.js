@@ -18,6 +18,7 @@ function NewPassword() {
   const [especial, setEspecial] = useState(false);
   const [comprimento, setComprimento] = useState("");
   const [numero, setNumero] = useState(false);
+  const [showToken, setShowToken] = useState(false);
   const [disable, setDisable] = useState(true)
   const ableTheButton = () => {
     const check = maiuscula && especial && numero && userPassword && newPassword;
@@ -73,8 +74,8 @@ function NewPassword() {
       setShowError(true);
     }
   }
-  const handleNewPassword = async () => {
-
+  const handleNewPassword = async (e) => {
+e.preventDefault();
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const userCodeString = localStorage.getItem("code");
@@ -98,11 +99,11 @@ function NewPassword() {
       if (response.ok) {
         setShow(true);
       } else {
-        setShowError(true);
+        setShowToken(true);
       }
     } catch (error) {
       console.log(error);
-      setShowError(true);
+      setShowToken(true);
     }
   };
 
@@ -148,6 +149,15 @@ function NewPassword() {
           <div className="d-flex align-items-center gap-1  ">
             <IoAlertCircleOutline className="text-danger fw-bold" />
             <span className="text-danger ">As senhas não são iguais.</span>
+          </div>
+        </small>
+      )}
+            {showToken && (
+        <small className="d-flex align-items-center justify-content-between p-2 mb-4">
+          <div className="d-flex align-items-center gap-1  ">
+            <IoAlertCircleOutline className="text-danger fw-bold" />
+            <span className="text-danger ">Token inválido ou expirado
+            .</span>
           </div>
         </small>
       )}

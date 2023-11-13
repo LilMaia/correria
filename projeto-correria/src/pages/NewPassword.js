@@ -93,11 +93,9 @@ function NewPassword() {
       }
     } catch (error) {
       console.log(error);
-      setShowError(true);
     }
   }
-  const handleNewPassword = async (e) => {
-    e.preventDefault();
+  const handleNewPassword = async () => {
     const userDataString = localStorage.getItem("user");
     const userData = JSON.parse(userDataString);
     const userCodeString = localStorage.getItem("code");

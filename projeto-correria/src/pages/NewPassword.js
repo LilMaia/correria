@@ -37,11 +37,13 @@ function NewPassword() {
   const handlePasswordChange = (e) => {
     e.preventDefault();
     setuserPassword(e.target.value);
+    setShowError(false);
   
   };
   const handlePassword = (e) => {
     e.preventDefault();
     setNewPassword(e.target.value);
+    setShowError(false);
 
   };
   const verifySmaePass = async (e) => {

@@ -41,6 +41,29 @@ function NewPassword() {
     setShowError(false);
   
   };
+  const genereteCodeAgain = async (e) => {
+    e.preventDefault();
+    setShowAlert(false);
+    const userDataString = localStorage.getItem("user");
+    const userData = JSON.parse(userDataString);
+    const newCode = {
+      email: userData.email,
+    };
+    try {
+      const response = await fetch(
+        ENV_BASE_URL + "/assessoria/gerar-token-redefinir-senha",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newCode),
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handlePassword = (e) => {
     e.preventDefault();
     setNewPassword(e.target.value);
@@ -158,6 +181,13 @@ e.preventDefault();
             <IoAlertCircleOutline className="text-danger fw-bold" />
             <span className="text-danger ">Token inválido ou expirado
             .</span>
+            <span>     <a
+                onClick={genereteCodeAgain}
+                href="/"
+                className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
+              >
+                Reenviar código
+              </a></span>
           </div>
         </small>
       )}

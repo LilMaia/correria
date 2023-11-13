@@ -41,9 +41,6 @@ function NewPassword() {
     setShowError(false);
 
   };
-  const genereteCodeAgain = () => {
-    window.location.href = "/forgotpassword"
-  };
   const handlePassword = (e) => {
     e.preventDefault();
     setNewPassword(e.target.value);
@@ -160,8 +157,7 @@ function NewPassword() {
             <span className="text-danger ">Token inválido ou expirado
               .</span>
             <span >     <a
-              onClick={genereteCodeAgain}
-              href="/"
+              href="/forgotpassword"
               className="link-body-emphasis link-offset-2 link-underline-opacity-25 link-underline-opacity-75-hover"
             >
               Reenviar código
